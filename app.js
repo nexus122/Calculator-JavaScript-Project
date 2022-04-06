@@ -1,30 +1,29 @@
-//Wrap code in an IIFE
-(function(){
-  
-  let screen = document.querySelector('.screen');
-  let buttons = document.querySelectorAll('.btn');
-  let clear = document.querySelector('.btn-clear');
-  let equal = document.querySelector('.btn-equal');
-  
-  //retrieve data from numbers that are clicked
-  buttons.forEach(function(button){
-    button.addEventListener('click', function(e){
-      let value = e.target.dataset.num;
-      screen.value += value;
-    })
-  });
-  
-  equal.addEventListener('click', function(e){
-    if(screen.value === ''){
-      screen.value = 'Please Enter a Value';
-    } else {
-      let answer = eval(screen.value);
-      screen.value = answer;
+Vue.createApp({
+  data() {
+    return {
+      operacion: '',
     }
-  })
-  
-  clear.addEventListener('click', function(e){
-    screen.value = '';
-  })
- 
-})(); //end IIFE
+  },
+  methods: {
+    calcular() {
+      let resp;
+
+      try{
+        resp = eval(this.operacion);
+      }catch(e){
+        resp = 'Syntax Error';
+      }
+      
+      this.operacion = resp;
+    },
+    escribirOperacion(value) {
+      if(this.operacion == 'Syntax Error'){
+        this.operacion = '';
+      }
+      this.operacion += value;
+    },
+    limpiar() {
+      this.operacion = '';
+    }
+  }
+}).mount('#app');
